@@ -5,19 +5,13 @@
 ## 玩法
 
 1. 將專案 clone 到本地
-1. 在終端機輸入
+1. 在終端機執行
 
     ```bash
-    ./sokoban <stage_name>
+    ./sokoban
     ```
 
-    如：
-
-    ```bash
-    ./sokoban Map/0_test_map.txt
-    ```
-
-1. 遊戲目標是將所有的箱子（'@'）推到點上（'.'）。你的角色是 '$'，可以透過輸入 W, A, S, D 來移動。
+1. 你的角色是 '$'，可以透過輸入 W, A, S, D 來移動。遊戲目標是將所有的箱子（'@'）推到點上（'.'）。
 
 ## 自訂關卡
 
@@ -28,4 +22,16 @@
 ```txt
 <row> <col>
 <stage>
+```
+
+自訂關卡的使用方法：
+
+```bash
+./sokoban <stage_name>
+```
+
+如：
+
+```bash
+./sokoban Map/0_test_map.txt
 ```

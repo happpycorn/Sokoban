@@ -4,23 +4,14 @@ GameState game_state;
 
 signed main(int argc, char *argv[]) {
 
-    if (argc < 2) {
-        printf("請提供地圖檔案，例如： ./sokoban Map/0_test_map.txt\n");
-        return 1;
-    }
-
-    const char *filename = argv[1];
+    const char *filename = argc < 2 ? "Map/0_test_map.txt" : argv[1];
     if (!readMap(filename, &game_state)) return 1;
 
     renderMap(game_state);
 
     while (1) {
 
-        printf("輸入 W/A/S/D 移動：");
-        char input;
-        scanf(" %c", &input);
-        
-        playerMove(input, &game_state);
+        playerMove(&game_state);
 
         renderMap(game_state);
         
@@ -32,7 +23,12 @@ signed main(int argc, char *argv[]) {
     return 0;
 }
 
-// read map from txt
+/*
+    read map from txt
+    input  : game_state, filename
+    output : succes or not
+    side effect : Fill the setting file into gamestate.
+*/
 int readMap(const char *filename, GameState *game_state) {
     FILE *fp = fopen(filename, "r");
     if (!fp) {
@@ -74,10 +70,15 @@ int readMap(const char *filename, GameState *game_state) {
     return 1;
 }
 
-// render map
+/*
+    render map
+    input  : game_state
+    output : not thing
+    side effect : Print map on the screen.
+*/
 void renderMap(GameState game_state) {
 
-    // 清螢幕
+    // Clear screen
     #ifdef _WIN32
         system("cls");
     #else
@@ -88,8 +89,18 @@ void renderMap(GameState game_state) {
         printf("%s\n", game_state.map[i]);
 }
 
-// player move
-void playerMove(char input, GameState *game_state) {
+/*
+    player move
+    input  : game_state, user's input
+    output : not thing
+    side effect : change the user and box's position, if it's allow.
+*/
+void playerMove(GameState *game_state) {
+
+    printf("輸入 W/A/S/D 移動：");
+    char input;
+    scanf(" %c", &input);
+
     int dx = 0, dy = 0;
 
     switch (input) {
@@ -97,7 +108,7 @@ void playerMove(char input, GameState *game_state) {
         case 's': case 'S': dy =  1; break;
         case 'a': case 'A': dx = -1; break;
         case 'd': case 'D': dx =  1; break;
-        default: return; // 非移動鍵直接返回
+        default: return; // Not allow input
     }
 
     int x = game_state->player.x;
@@ -128,7 +139,11 @@ void playerMove(char input, GameState *game_state) {
     }
 }
 
-// game state check
+/*
+    game state check
+    input  : game_state
+    output : bool -> win or not
+*/
 int gameStateCheck(GameState game_state) {
     for (int i = 0; i < game_state.rows; i++)
         for (int j = 0; game_state.map[i][j]; j++)

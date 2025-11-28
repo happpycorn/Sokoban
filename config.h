@@ -26,5 +26,5 @@ typedef struct {
 
 int readMap(const char *filename, GameState *game_state);
 void renderMap(GameState game_state);
-void playerMove(char input, GameState *game_state);
+void playerMove(GameState *game_state);
 int gameStateCheck(GameState game_state);
