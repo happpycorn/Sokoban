@@ -5,12 +5,12 @@ GameState game_state;
 signed main(int argc, char *argv[]) {
 
     if (argc < 2) {
-        printf("請提供地圖檔案，例如： ./sokoban map.txt\n");
+        printf("請提供地圖檔案，例如： ./sokoban Map/0_test_map.txt\n");
         return 1;
     }
 
     const char *filename = argv[1];
-    if (!mapRead(filename, &game_state)) return 1;
+    if (!readMap(filename, &game_state)) return 1;
 
     renderMap(game_state);
 
@@ -32,7 +32,8 @@ signed main(int argc, char *argv[]) {
     return 0;
 }
 
-int mapRead(const char *filename, GameState *game_state) {
+// read map from txt
+int readMap(const char *filename, GameState *game_state) {
     FILE *fp = fopen(filename, "r");
     if (!fp) {
         printf("無法開啟檔案：%s\n", filename);
@@ -73,8 +74,8 @@ int mapRead(const char *filename, GameState *game_state) {
     return 1;
 }
 
+// render map
 void renderMap(GameState game_state) {
-    // printf("Rows: %d, Cols: %d\n", game_state.rows, game_state.cols);
 
     // 清螢幕
     #ifdef _WIN32
@@ -87,6 +88,7 @@ void renderMap(GameState game_state) {
         printf("%s\n", game_state.map[i]);
 }
 
+// player move
 void playerMove(char input, GameState *game_state) {
     int dx = 0, dy = 0;
 
@@ -126,6 +128,7 @@ void playerMove(char input, GameState *game_state) {
     }
 }
 
+// game state check
 int gameStateCheck(GameState game_state) {
     for (int i = 0; i < game_state.rows; i++)
         for (int j = 0; game_state.map[i][j]; j++)
