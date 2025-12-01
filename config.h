@@ -19,6 +19,7 @@ typedef struct {
 
 typedef struct {
     int rows, cols;
+    int score;
     char map[MAX_ROWS][MAX_COLS];
     char origin_map[MAX_ROWS][MAX_COLS];
     Player player;

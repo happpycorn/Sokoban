@@ -7,6 +7,8 @@ signed main(int argc, char *argv[]) {
     const char *filename = argc < 2 ? "Map/0_test_map.txt" : argv[1];
     if (!readMap(filename, &game_state)) return 1;
 
+    game_state.score = 0;
+
     renderMap(game_state);
 
     while (1) {
@@ -85,6 +87,8 @@ void renderMap(GameState game_state) {
         system("clear");
     #endif
 
+    printf("Spend: %d\n", game_state.score);
+
     for (int i = 0; i < game_state.rows; i++)
         printf("%s\n", game_state.map[i]);
 }
@@ -123,8 +127,8 @@ void playerMove(GameState *game_state) {
         game_state->map[ny][nx] = CH_PLAYER;
         game_state->player.x = nx;
         game_state->player.y = ny;
-    } 
-    else if (target == CH_BOX) {
+        game_state->score++;
+    } else if (target == CH_BOX) {
         int bx = nx + dx;
         int by = ny + dy;
         char boxTarget = game_state->map[by][bx];
@@ -135,6 +139,7 @@ void playerMove(GameState *game_state) {
             game_state->map[y][x] = (game_state->origin_map[y][x] == CH_POINT) ? CH_POINT : CH_EMPTY;
             game_state->player.x = nx;
             game_state->player.y = ny;
+            game_state->score++;
         }
     }
 }
