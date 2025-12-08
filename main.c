@@ -79,12 +79,13 @@ int readMap(const char *filename, GameState *game_state) {
 void renderMap(GameState game_state) {
 
     // Clear screen
+   
     #ifdef _WIN32
         system("cls");
     #else
         system("clear");
     #endif
-
+   
     for (int i = 0; i < game_state.rows; i++)
         printf("%s\n", game_state.map[i]);
 }
@@ -116,38 +117,63 @@ void playerMove(GameState *game_state) {
     int nx = x + dx;
     int ny = y + dy;
 
+    // Boundary check
+    if (nx < 0 || nx >= game_state->cols || ny < 0 || ny >= game_state->rows) {
+        printf("撞牆啦！按 Enter 繼續...");
+        getchar(); getchar();
+        return;
+    }
+
     char target = game_state->map[ny][nx];
 
     if (target == CH_EMPTY || target == CH_POINT) {
+        // 移動玩家
         game_state->map[y][x] = (game_state->origin_map[y][x] == CH_POINT) ? CH_POINT : CH_EMPTY;
         game_state->map[ny][nx] = CH_PLAYER;
         game_state->player.x = nx;
         game_state->player.y = ny;
-    } 
+    }
     else if (target == CH_BOX) {
         int bx = nx + dx;
         int by = ny + dy;
-        char boxTarget = game_state->map[by][bx];
 
+        // 箱子邊界檢查
+        if (bx < 0 || bx >= game_state->cols || by < 0 || by >= game_state->rows) {
+            printf("箱子撞到邊界！按 Enter 繼續...");
+            getchar(); getchar();
+            return;
+        }
+
+        char boxTarget = game_state->map[by][bx];
         if (boxTarget == CH_EMPTY || boxTarget == CH_POINT) {
+            // 推箱子成功
             game_state->map[by][bx] = CH_BOX;
             game_state->map[ny][nx] = CH_PLAYER;
             game_state->map[y][x] = (game_state->origin_map[y][x] == CH_POINT) ? CH_POINT : CH_EMPTY;
             game_state->player.x = nx;
             game_state->player.y = ny;
+        } else {
+            // 箱子前方被阻擋
+            printf("箱子前方被阻擋！按 Enter 繼續...");
+            getchar(); getchar();
         }
     }
+    else if (target == CH_WALL) {
+        printf("撞牆啦！按 Enter 繼續...");
+        getchar(); getchar();
+    }
 }
-
 /*
     game state check
     input  : game_state
     output : bool -> win or not
 */
 int gameStateCheck(GameState game_state) {
-    for (int i = 0; i < game_state.rows; i++)
-        for (int j = 0; game_state.map[i][j]; j++)
+    for (int i = 0; i < game_state.rows; i++) {
+        for (int j = 0; j < game_state.cols; j++) {
             if (game_state.origin_map[i][j] == CH_POINT && game_state.map[i][j] != CH_BOX)
                 return 0;
+        }
+    }
     return 1;
 }
