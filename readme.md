@@ -42,3 +42,9 @@
 ```bash
 ./sokoban Map/0_test_map.txt
 ```
+
+## 簡報連結
+
+2025.12.11 的簡報
+
+[https://www.canva.com/design/DAG6QY4Zi3A/XXfKEvOQMkYjR0-sIKbPrA/view?utm_content=DAG6QY4Zi3A&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hb9ebede1e3](https://www.canva.com/design/DAG6QY4Zi3A/XXfKEvOQMkYjR0-sIKbPrA/view?utm_content=DAG6QY4Zi3A&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hb9ebede1e3)
